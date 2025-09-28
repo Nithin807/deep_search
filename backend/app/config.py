@@ -6,3 +6,4 @@ EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL")
 
 DATABASE_PATH = "backend/data/rag.sqlite"
 DATA_PATH = "backend/data/AWSCertifiedMLSlides.pdf"
+USER_INFO_PATH = "backend/data/user.sqlite"

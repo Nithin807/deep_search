@@ -26,3 +26,15 @@ class Generation:
         )
         answer = response.choices[0].message.content.strip()
         return answer
+    
+    def generate_with_history(self,query,history_conversation,top_k=5):
+        contexts = self.retrieval.retrieve(query, top_k)
+        contexts_text = "\n\n".join([f"Source: {src}, Chunk ID: {cid}\nContent: {text}" for _, src, cid, text in contexts])
+        user_prompts = f"Use the following context to answer the question:\n\n{contexts_text}\n\nQuestion: {query}\nAnswer:"
+        messages = [{"role": "system", "content": "You are a helpful assistant. Don't exceed more than 200 words."}] + history_conversation + [{"role": "user", "content": user_prompts}]
+        response = self.client.chat.completions.create(
+            model=self.gpt_model,
+            messages=messages
+        )
+        answer = response.choices[0].message.content.strip()
+        return answer
